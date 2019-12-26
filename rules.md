@@ -32,8 +32,7 @@
 <simple-type-specifier>  ::= 'void'|'int'|'char'|'double'
 <const-qualifier>        ::= 'const'
     
- -------------------------------------------------------------------------
-
+    
 <C0-program> ::= 
     {<variable-declaration>}{<function-definition>}
 
@@ -131,10 +130,9 @@
      '('<expression>')' 
     |<identifier>
     |<integer-literal>
+    |<char-literal>
+    |<floating-literal>
     |<function-call>
-	|<char-literal>
-    |<floating-literal>	
-
 
 <function-call> ::= 
     <identifier> '(' [<expression-list>] ')'
@@ -177,4 +175,3 @@
     |<digit-seq><exponent>
 <exponent> ::= 
     ('e'|'E')[<sign>]<digit-seq>
-

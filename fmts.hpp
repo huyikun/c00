@@ -287,6 +287,9 @@ namespace fmt {
 			case plc0::NOP:
 				name = "nop";
 				break;
+			case plc0::BIPUSH:
+				name = "bipush";
+				break;
 			case plc0::IPUSH:
 				name = "ipush";
 				break;
@@ -379,6 +382,9 @@ namespace fmt {
 				break;
 			case plc0::IPRINT:
 				name = "iprint";
+				break;
+			case plc0::CPRINT:
+				name = "cprint";
 				break;
 			case plc0::PRINTL:
 				name = "printl";

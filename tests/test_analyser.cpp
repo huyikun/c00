@@ -48,12 +48,17 @@ std::pair<std::vector<plc0::functionInstructions>, std::optional<plc0::Compilati
 
 TEST_CASE("Basic analyzing program") {
 	std::string input = 
-		"int a = 2;\n"
-		"int main(){"
-		"	print(a+1);"
+		"int x = 123;\n"
+		"int main()\n"
+		"{\n"
+		"	int year = 1;\n"
+		"	int month = 22;\n"
+		"	while(year > 2)\n {"
+		"		print(month);\n"
+		"		year = year + 1;\n"
+		"	}\n"
 		"	return 1;\n"
 		"}";
 	auto result = analyze(input);
-	REQUIRE(result.first.size() == 0);
-	REQUIRE_FALSE(result.second.has_value());
+	REQUIRE(!result.second.has_value());
 }

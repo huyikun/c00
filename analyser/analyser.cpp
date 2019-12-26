@@ -61,7 +61,7 @@ namespace plc0 {
 			while (true) {
 				next = nextToken();
 				if (next.value().GetType() == SEMICOLON) {
-					return {};
+					break;
 				}
 				else if (next.value().GetType() == COMMA_SIGN) {
 					auto err = analyseInitDeclarator(isConst, isGlobal);
@@ -618,7 +618,14 @@ namespace plc0 {
 				err = analyseFunctionCall();
 				if (err.has_value())
 					return err;
-				_funcInstructions[_instructionIndex]._funins.emplace_back(POP, 0, 0);
+				for (int i = 0; i < _fun.size(); i++) {
+					if (_fun[i]._value == preTokenStr) {
+						if (_fun[i]._haveReturnValue == 1) {
+							_funcInstructions[_instructionIndex]._funins.emplace_back(POP, 0, 0);
+						}
+						break;
+					}
+				}
 				return {};
 			}
 			default:
@@ -906,6 +913,9 @@ namespace plc0 {
 			auto err = analyseExpression();
 			if (err.has_value())
 				return err;
+
+			_funcInstructions[_instructionIndex]._funins.emplace_back(BIPUSH, 32, 0);
+			_funcInstructions[_instructionIndex]._funins.emplace_back(CPRINT, 0, 0);
 			_funcInstructions[_instructionIndex]._funins.emplace_back(IPRINT, 0, 0);
 		}
 		_funcInstructions[_instructionIndex]._funins.emplace_back(PRINTL, 0, 0);
