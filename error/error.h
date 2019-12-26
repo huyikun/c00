@@ -13,10 +13,8 @@ namespace plc0 {
 		std::cout << "Please check your program carefully.\n";
 		std::cout << "If you believe it's not your fault, please report this to TAs.\n";
 		std::abort();
-		// or *((int*)114514) = 19260817;
 	}
 
-	// To keep it simple, we don't create an error system.
 	enum ErrorCode { 
 		ErrNoError, // Should be only used internally.
 		ErrStreamError,

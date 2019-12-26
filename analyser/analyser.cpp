@@ -82,26 +82,24 @@ namespace plc0 {
 		if (!next.has_value() || next.value().GetType() != IDENTIFIER)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedIdentifier);
 
-		// 取得变量名
 		auto tmp = next;
 
 		next = nextToken();
 
-		if (isConstant) {//是常量
-			if (next.value().GetType() != EQUAL_SIGN)//未赋值
+		if (isConstant) {
+			if (next.value().GetType() != EQUAL_SIGN)
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrConstantNeedValue);
-			else {//要赋值
-				if (isGlobal) {//是全局常量
+			else {
+				if (isGlobal) {
 					if (isDeclared(tmp.value().GetValueString(), 0))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 
-					// _start.emplace_back(IPUSH,_nextVarAddress-1,0);
 					auto err = analyseExpression();
 					if (err.has_value())
 						return err;
 					addConstant(tmp.value(), 0);
 				}
-				else {//局部常量
+				else {
 					if (isDeclared(tmp.value().GetValueString(), 1))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 
@@ -112,16 +110,16 @@ namespace plc0 {
 				}
 			}
 		}
-		else { //是变量
+		else {
 			if (next.value().GetType() == TokenType::COMMA_SIGN || next.value().GetType() == TokenType::SEMICOLON) {//未赋值
 				unreadToken();
-				if (isGlobal) { //是全局变量
+				if (isGlobal) {
 					if (isDeclared(tmp.value().GetValueString(), 0))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 					addUninitializedVariable(tmp.value(), 0);
 					_start.emplace_back(SNEW, 1, 0);
 				}
-				else { //是局部变量
+				else { 
 					if (isDeclared(tmp.value().GetValueString(), 1))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 					addUninitializedVariable(tmp.value(), 1);
@@ -129,8 +127,8 @@ namespace plc0 {
 				}
 				return {};
 			}
-			else {//为变量赋值
-				if (isGlobal) {//是全局变量
+			else {
+				if (isGlobal) {
 					if (isDeclared(tmp.value().GetValueString(), 0))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 
@@ -139,11 +137,11 @@ namespace plc0 {
 						return err;
 					addVariable(tmp.value(), 0);
 				}
-				else {//局部变量
+				else {
 					if (isDeclared(tmp.value().GetValueString(), 1))
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 
-					addUninitializedVariable(tmp.value(), 1);//将局部变量先声明为未赋值变量,type=1;
+					addUninitializedVariable(tmp.value(), 1);
 					auto err = analyseExpression();
 					if (err.has_value())
 						return err;
@@ -173,7 +171,7 @@ namespace plc0 {
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrDuplicateDeclaration);
 			addFunction(next.value(), 1); 
 
-			_indexTable.emplace_back(_nextVarAddress);//指向该函数第一个参数的下一个地址
+			_indexTable.emplace_back(_nextVarAddress);
 			int oldAddress = _nextVarAddress;
 
 			int tmp = _fun.size();
@@ -190,7 +188,7 @@ namespace plc0 {
 			next = nextToken();
 			if (!next.has_value())
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidFunctionDefinition);
-			else if (next.value().GetType() == TokenType::RIGHT_BRACKET) {//函数参数为0
+			else if (next.value().GetType() == TokenType::RIGHT_BRACKET) {
 				unreadToken();
 			}
 			else {
@@ -203,7 +201,7 @@ namespace plc0 {
 					next = nextToken();
 					if (!next.has_value())
 						return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidFunctionDefinition);
-					if (next.value().GetType() == TokenType::COMMA_SIGN) {//后面还有参数
+					if (next.value().GetType() == TokenType::COMMA_SIGN) {
 						auto err = analyseParamDeclaration();
 						if (err.has_value())
 							return err;
@@ -247,7 +245,7 @@ namespace plc0 {
 		next = nextToken();
 		if (!next.has_value())
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidFunctionDefinition);
-		else if (next.value().GetType() == TokenType::RIGHT_BRACKET) {//函数参数为0
+		else if (next.value().GetType() == TokenType::RIGHT_BRACKET) {
 			unreadToken();
 		}
 		else {
@@ -260,7 +258,7 @@ namespace plc0 {
 				next = nextToken();
 				if (!next.has_value())
 					return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidFunctionDefinition);
-				if (next.value().GetType() == TokenType::COMMA) {//后面还有参数
+				if (next.value().GetType() == TokenType::COMMA) {
 					auto err = analyseParameterDeclaration();
 					if (err.has_value())
 						return err;
@@ -314,7 +312,6 @@ namespace plc0 {
 		return {};
 	}
 	
-	// <expression> ::= <additive - expression>
 	std::optional<CompilationError> Analyser::analyseExpression() { 
 		auto err = analyseMultiExpression();
 		if (err.has_value())
@@ -339,10 +336,8 @@ namespace plc0 {
 			else {
 				if (next.value().GetType() == TokenType::PLUS_SIGN)
 					_funcInstructions[_instructionIndex]._funins.emplace_back(IADD, 0, 0);
-				//                    _instructions.emplace_back(Operation::IADD, 0, 0);
 				else if (next.value().GetType() == TokenType::MINUS_SIGN)
 					_funcInstructions[_instructionIndex]._funins.emplace_back(ISUB, 0, 0);
-				//                    _instructions.emplace_back(Operation::ISUB, 0, 0);
 			}
 		}
 		return {  };
@@ -365,7 +360,6 @@ namespace plc0 {
 			if (err.has_value())
 				return err;
 
-			//
 			if (_instructionIndex == -1) {
 				if (next.value().GetType() == TokenType::MULTIPLICATION_SIGN)
 					_start.emplace_back(Operation::IMUL, 0, 0);
@@ -375,10 +369,8 @@ namespace plc0 {
 			else {
 				if (next.value().GetType() == TokenType::MULTIPLICATION_SIGN)
 					_funcInstructions[_instructionIndex]._funins.emplace_back(IMUL, 0, 0);
-				//                    _instructions.emplace_back(Operation::IMUL, 0, 0);
 				else if (next.value().GetType() == TokenType::DIVISION_SIGN)
 					_funcInstructions[_instructionIndex]._funins.emplace_back(IDIV, 0, 0);
-				//                    _instructions.emplace_back(Operation::IDIV, 0, 0);
 			}
 		}
 		return {};
@@ -412,6 +404,7 @@ namespace plc0 {
 		return {};
 	}
 	*/
+
 	// unary-expression
 	std::optional<CompilationError> Analyser::analyseUnaryExpression() {
 		auto next = nextToken();
@@ -440,7 +433,7 @@ namespace plc0 {
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedRightBracket);
 			break;
 		case TokenType::IDENTIFIER:
-			preToken = next;         //preToken是标识符identifer
+			preToken = next; 
 			preTokenStr = preToken.value().GetValueString();
 			next = nextToken();
 			if (!next.has_value() || next.value().GetType() != TokenType::LEFT_BRACKET) {//<unary-expression>:=[<unary-operator>]<identifier>
@@ -463,13 +456,13 @@ namespace plc0 {
 				addr = _var[index].getAddress();
 				int _offset = 0;
 				int _level_diff = 0;
-				if (_instructionIndex == -1) {//现在在全局变量赋值
+				if (_instructionIndex == -1) {
 					_offset = addr;
 					_level_diff = 0;
 					_start.emplace_back(LOADA, _level_diff, _offset);
 					_start.emplace_back(ILOAD, 0, 0);
 				}
-				else {//局部变量赋值
+				else {
 					_offset = addr - _indexTable[_var[index].getLevel()];
 					_level_diff = 1 - _var[index].getLevel();
 					
@@ -478,7 +471,7 @@ namespace plc0 {
 				
 				}
 			}
-			else {//<unary-expression>:=<function-call> ::= <identifier> '(' [<expression-list>] ')'
+			else {
 				unreadToken();
 				unreadToken();
 				err = analyseFunctionCall();
@@ -489,13 +482,10 @@ namespace plc0 {
 		case TokenType::DECINTEGER:
 		case TokenType::HEXINTEGER:
 			x = atoi(next.value().GetValueString().c_str());
-			if (_instructionIndex == -1) {
+			if (_instructionIndex == -1)
 				_start.emplace_back(IPUSH, x, 0);
-			}
-			else {
+			else
 				_funcInstructions[_instructionIndex]._funins.emplace_back(IPUSH, x, 0);
-				//                    _instructions.emplace_back(IPUSH,x,0);
-			}
 			break;
 		default:
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
@@ -507,7 +497,6 @@ namespace plc0 {
 			}
 			else {
 				_funcInstructions[_instructionIndex]._funins.emplace_back(INEG, 0, 0);
-				//                _instructions.emplace_back(Operation::INEG, 0,0);
 			}
 		}
 		return {};
@@ -676,8 +665,6 @@ namespace plc0 {
 		int off1 = _funcInstructions[_instructionIndex]._funins.size();
 		_funcInstructions[_instructionIndex]._funins[index1].SetX(off1);
 
-
-
 		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != TokenType::ELSE) {
 			unreadToken();
@@ -794,10 +781,7 @@ namespace plc0 {
 		int params = 0;
 		auto next = nextToken();
 		auto tmp = next.value();
-		/*
-		if (!isDeclaredFunction(tmp.GetValueString()))
-			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNotDeclared);
-		*/
+
 		int nf = _fun.size();
 		bool haveFunction = false;
 		for (int i = 0; i < nf; i++) {
@@ -889,7 +873,6 @@ namespace plc0 {
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidPrint);
 		}
 
-
 		next = nextToken();
 		if (!next.has_value())
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteStatement);
@@ -904,13 +887,11 @@ namespace plc0 {
 			unreadToken();
 		}
 
-
 		auto err = analyseExpression();
 		if (err.has_value())
 			return err;
 
 		_funcInstructions[_instructionIndex]._funins.emplace_back(IPRINT, 0, 0);
-
 
 		while (true) {
 			next = nextToken();
@@ -922,8 +903,6 @@ namespace plc0 {
 			}
 			if (next.value().GetType() != TokenType::COMMA_SIGN)
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteStatement);
-			_funcInstructions[_instructionIndex]._funins.emplace_back(BIPUSH, 32, 0);
-			_funcInstructions[_instructionIndex]._funins.emplace_back(CPRINT, 0, 0);
 			auto err = analyseExpression();
 			if (err.has_value())
 				return err;
@@ -960,7 +939,6 @@ namespace plc0 {
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidScan);
 		}
 
-
 		auto preTokenStr = next.value().GetValueString();
 		int n = _var.size();
 		int addr = -1;
@@ -975,13 +953,14 @@ namespace plc0 {
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNotDeclared);
 		if (_var[index].getType() == 1)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNotInitialized);
+
 		addr = _var[index].getAddress();
 		int _offset = addr - _indexTable[_var[index].getLevel()];;
 		int _level_diff = 1 - _var[index].getLevel();
+
 		_funcInstructions[_instructionIndex]._funins.emplace_back(LOADA, _level_diff, _offset);
 		_funcInstructions[_instructionIndex]._funins.emplace_back(ISCAN, 0, 0);
 		_funcInstructions[_instructionIndex]._funins.emplace_back(ISTORE, 0, 0);
-
 
 		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != TokenType::RIGHT_BRACKET) {
@@ -1004,7 +983,7 @@ namespace plc0 {
 		if (!next.has_value())
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteStatement);
 		if (next.value().GetType() == TokenType::SEMICOLON) {
-			if (_fun[_instructionIndex]._haveReturnValue == 1) {//函数声明时有返回值
+			if (_fun[_instructionIndex]._haveReturnValue == 1) {
 				return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedReturnValue);
 			}
 			else {
@@ -1017,7 +996,7 @@ namespace plc0 {
 		auto err = analyseExpression();
 		if (err.has_value())
 			return err;
-		if (_fun[_instructionIndex]._haveReturnValue == 0) //函数声明时无返回值
+		if (_fun[_instructionIndex]._haveReturnValue == 0) 
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNoNeedReturnValue);
 		
 		_funcInstructions[_instructionIndex]._funins.emplace_back(IRET, 0, 0);

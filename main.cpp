@@ -205,7 +205,7 @@ void Analyse_o0(std::istream& input, std::ostream& output){
 }
 
 int main(int argc, char** argv) {
-	argparse::ArgumentParser program("miniplc0");
+	argparse::ArgumentParser program("plc0");
 	program.add_argument("input")
 		.help("speicify the file to be compiled.");
 	/*
