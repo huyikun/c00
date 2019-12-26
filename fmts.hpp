@@ -436,7 +436,7 @@ namespace fmt {
 			case plc0::CALL:
 				return format_to(ctx.out(), "{} {}", p.GetOperation(), p.GetX());
 			case plc0::LOADA:
-				return format_to(ctx.out(), "{} {} {}", p.GetOperation(), p.GetX(), p.GetY());
+				return format_to(ctx.out(), "{} {}, {}", p.GetOperation(), p.GetX(), p.GetY());
 			}
 			return format_to(ctx.out(), "NOP");
 		}
