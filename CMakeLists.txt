@@ -15,7 +15,6 @@ set(lib_src
 	tokenizer/utils.hpp
 	error/error.h
 	analyser/analyser.h
-	analyser/ast.h
 	analyser/analyser.cpp
 	instruction/instruction.h
 )

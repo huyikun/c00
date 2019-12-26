@@ -230,12 +230,6 @@ namespace plc0 {
 			if (err.has_value())
 				return err;
 
-			if (_fun[_instructionIndex]._haveReturnValue == 0) {
-				_funcInstructions[_instructionIndex]._funins.emplace_back(RET, 0, 0);
-			}
-			else if (_fun[_instructionIndex]._haveReturnValue == 1) {
-				_funcInstructions[_instructionIndex]._funins.emplace_back(IRET, 0, 0);
-			}
 			int nvar = _var.size();
 			while (nvar > oldAddress) {
 				_var.pop_back();
