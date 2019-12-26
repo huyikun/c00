@@ -48,11 +48,10 @@ namespace plc0 {
 			next = nextToken();
 			unreadToken();
 			unreadToken();
-			unreadToken();
-			if (isConst)
+			if (next.value().GetType() == TokenType::LEFT_BRACKET) {
 				unreadToken();
-			if (next.value().GetType() == TokenType::LEFT_BRACKET) 
 				return {};
+			}
 			
 			auto err = analyseInitDeclarator(isConst, isGlobal);
 			if (err.has_value())
@@ -78,7 +77,6 @@ namespace plc0 {
 
 	std::optional<CompilationError> Analyser::analyseInitDeclarator(bool isConstant, bool isGlobal) {
 		auto next = nextToken();
-		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != IDENTIFIER)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedIdentifier);
 
