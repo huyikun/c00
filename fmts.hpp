@@ -285,106 +285,106 @@ namespace fmt {
 			std::string name;
 			switch (p) {
 			case plc0::NOP:
-				name = "NOP";
+				name = "nop";
 				break;
 			case plc0::IPUSH:
-				name = "IPUSH";
+				name = "ipush";
 				break;
 			case plc0::POP:
-				name = "POP";
+				name = "pop";
 				break;
 			case plc0::POP2:
-				name = "POP2";
+				name = "pop2";
 				break;
 			case plc0::POPN:
-				name = "POPN";
+				name = "popn";
 				break;
 			case plc0::DUP:
-				name = "DUP";
+				name = "dup";
 				break;
 			case plc0::LOADC:
-				name = "LOADC";
+				name = "loadc";
 				break;
 			case plc0::LOADA:
-				name = "LOADA";
+				name = "loada";
 				break;
 			case plc0::NEW:
-				name = "NEW";
+				name = "new";
 				break;
 			case plc0::SNEW:
-				name = "SNEW";
+				name = "snew";
 				break;
 			case plc0::ILOAD:
-				name = "ILOAD";
+				name = "iload";
 				break;
 			case plc0::ALOAD:
-				name = "ALOAD";
+				name = "aload";
 				break;
 			case plc0::IALOAD:
-				name = "IALOAD";
+				name = "iaload";
 				break;
 			case plc0::ISTORE:
-				name = "ISTORE";
+				name = "istore";
 				break;
 			case plc0::IASTORE:
-				name = "IASTORE";
+				name = "iastore";
 				break;
 			case plc0::IADD:
-				name = "IADD";
+				name = "iadd";
 				break;
 			case plc0::ISUB:
-				name = "ISUB";
+				name = "isub";
 				break;
 			case plc0::IMUL:
-				name = "IMUL";
+				name = "imul";
 				break;
 			case plc0::IDIV:
-				name = "IDIV";
+				name = "idiv";
 				break;
 			case plc0::INEG:
-				name = "INEG";
+				name = "ineg";
 				break;
 			case plc0::ICMP:
-				name = "ICMP";
+				name = "icmp";
 				break;
 			case plc0::JMP:
-				name = "JMP";
+				name = "jmp";
 				break;
 			case plc0::JE:
-				name = "JE";
+				name = "je";
 				break;
 			case plc0::JNE:
-				name = "JNE";
+				name = "jne";
 				break;
 			case plc0::JL:
-				name = "JL";
+				name = "jl";
 				break;
 			case plc0::JGE:
-				name = "JGE";
+				name = "jge";
 				break;
 			case plc0::JG:
-				name = "JG";
+				name = "jg";
 				break;
 			case plc0::JLE:
-				name = "JLE";
+				name = "jle";
 				break;
 			case plc0::CALL:
-				name = "CALL";
+				name = "call";
 				break;
 			case plc0::RET:
-				name = "RET";
+				name = "ret";
 				break;
 			case plc0::IRET:
-				name = "IRET";
+				name = "iret";
 				break;
 			case plc0::IPRINT:
-				name = "IPRINT";
+				name = "iprint";
 				break;
 			case plc0::PRINTL:
-				name = "PRINTL";
+				name = "printl";
 				break;
 			case plc0::ISCAN:
-				name = "ISCAN";
+				name = "iscan";
 				break;
 			}
 			return format_to(ctx.out(), name);
