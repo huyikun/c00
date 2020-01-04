@@ -425,12 +425,10 @@ namespace fmt {
 			case plc0::RET:
 			case plc0::IRET:
 			case plc0::IPRINT:
-			case plc0::CPRINT:
 			case plc0::PRINTL:
 			case plc0::ISCAN:
 				return format_to(ctx.out(), "{}", p.GetOperation());
 			case plc0::IPUSH:
-			case plc0::BIPUSH:
 			case plc0::POPN:
 			case plc0::LOADC:
 			case plc0::SNEW:
