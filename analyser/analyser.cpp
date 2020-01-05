@@ -673,6 +673,7 @@ namespace plc0 {
 		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != TokenType::ELSE) {
 			_funcInstructions[_instructionIndex]._funins.erase(_funcInstructions[_instructionIndex]._funins.begin() + _funcInstructions[_instructionIndex]._funins.size() - 1);
+			_funcInstructions[_instructionIndex]._funins[index1].SetX(index2);
 			unreadToken();
 			return {};
 		}
