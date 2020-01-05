@@ -666,12 +666,13 @@ namespace plc0 {
 		_funcInstructions[_instructionIndex]._funins.emplace_back(JMP, 0, 0);
 		int index2 = _funcInstructions[_instructionIndex]._funins.size() - 1;
 		_funcInstructions[_instructionIndex]._funins[index1].SetX(index2 + 1);
-
+		/*
 		int off1 = _funcInstructions[_instructionIndex]._funins.size();
 		_funcInstructions[_instructionIndex]._funins[index1].SetX(off1);
-
+		*/
 		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != TokenType::ELSE) {
+			_funcInstructions[_instructionIndex]._funins.erase(_funcInstructions[_instructionIndex]._funins.begin() + _funcInstructions[_instructionIndex]._funins.size() - 1);
 			unreadToken();
 			return {};
 		}
