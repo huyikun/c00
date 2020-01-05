@@ -478,8 +478,14 @@ namespace plc0 {
 			}
 			break;
 		case TokenType::DECINTEGER:
-		case TokenType::HEXINTEGER:
 			x = atoi(next.value().GetValueString().c_str());
+			if (_instructionIndex == -1)
+				_start.emplace_back(IPUSH, x, 0);
+			else
+				_funcInstructions[_instructionIndex]._funins.emplace_back(IPUSH, x, 0);
+			break;
+		case TokenType::HEXINTEGER:
+			x = strtol(next.value().GetValueString().c_str(),nullptr, 16);
 			if (_instructionIndex == -1)
 				_start.emplace_back(IPUSH, x, 0);
 			else
