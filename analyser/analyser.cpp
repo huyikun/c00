@@ -492,7 +492,7 @@ namespace plc0 {
 				_funcInstructions[_instructionIndex]._funins.emplace_back(IPUSH, x, 0);
 			break;
 		default:
-			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrIncompleteExpression);
+			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrInvalidExpression);
 		}
 
 		if (prefix == -1) {
