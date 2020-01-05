@@ -969,9 +969,9 @@ namespace plc0 {
 		}
 		if (index == -1)
 			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNotDeclared);
-		if (_var[index].getType() == 1)
-			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNotInitialized);
-
+		if (_var[index].getType() == 0)
+			return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrAssignToConstant);
+		
 		addr = _var[index].getAddress();
 		int _offset = addr - _indexTable[_var[index].getLevel()];;
 		int _level_diff = 1 - _var[index].getLevel();
