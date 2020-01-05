@@ -22,7 +22,11 @@ namespace plc0 {
 		err = analyseFunctionDefinition();
 		if (err.has_value())
 			return err;
-		return {};
+		for (int i = 0; i < _fun.size(); i++) {
+			if (_fun[i]._value == "main")
+				return {};
+		}
+		return std::make_optional<CompilationError>(_current_pos, ErrorCode::ErrNeedMainFunction);
 	}
 
 	// <variable-declaration> ::= [<const - qualifier>] <type - specifier> < init - declarator - list>';'

@@ -33,6 +33,24 @@ namespace fmt {
                 case plc0::ErrNeedIdentifier:
                     name = "Need an identifier here.";
                     break;
+				case plc0::ErrNeedTypeSpecifier:
+					name = "Need an type specifier here.";
+					break; 
+				case plc0::ErrNeedRightBracket:
+					name = "Need an right bracket here.";
+					break;
+				case plc0::ErrNeedLeftBrace:
+					name = "Need an left brace here.";
+					break;
+				case plc0::ErrNeedLeftBracket:
+					name = "Need an Left Bracket here.";
+					break;
+				case plc0::ErrNeedRightBrace:
+					name = "Need an right brace here.";
+					break;
+				case plc0::ErrInvalidParam:
+					name = "Invalid param here.";
+					break;
                 case plc0::ErrConstantNeedValue:
                     name = "The constant need a value to initialize.";
                     break;
@@ -40,37 +58,52 @@ namespace fmt {
                     name = "Zai? Wei shen me bu xie fen hao.";
                     break;
                 case plc0::ErrNoComma:
-                    name = "Zai? Wei shen me bu xie dou hao.";
+                    name = "Wei shen me bu xie dou hao.";
                     break;
                 case plc0::ErrNoLeftBracket:
-                    name = "Zai? Wei shen me bu xie zuo kuo hao.";
+                    name = "Wei shen me bu xie zuo kuo hao.";
                     break;
 			    case plc0::ErrNoRightBracket:
-                    name = "Zai? Wei shen me bu xie you kuo hao.";
+                    name = "Wei shen me bu xie you kuo hao.";
                     break;
                 case plc0::ErrNoLeftBrace:
-                    name = "Zai? Wei shen me bu xie zuo dadada kuo hao.";
+                    name = "Wei shen me bu xie zuo dadada kuo hao.";
                     break;
                 case plc0::ErrNoRightBrace:
-                    name = "Zai? Wei shen me bu xie you dadada kuo hao.";
+                    name = "Wei shen me bu xie you dadada kuo hao.";
                     break;
                 case plc0::ErrInvalidVariableDeclaration:
                     name = "The variable declaration is invalid.";
                     break;
-                case plc0::ErrIncompleteExpression:
-                    name = "The expression is incomplete.";
-                    break;
+				case plc0::ErrInvalidExpression:
+					name = "The expression is invalid.";
+					break;
+				case plc0::ErrInvalidStatement:
+					name = "The statement is invalid.";
+					break;
+				case plc0::ErrInvalidScan:
+					name = "The scan statment is invalid.";
+					break;
+				case plc0::ErrInvalidDecInteger:
+					name = "The dec integer is invalid.";
+					break;
+				case plc0::ErrInvalidHexInteger:
+					name = "The hex integer is invalid.";
+					break;
+				case plc0::ErrInvalidFunctionDefinition:
+					name = "The function definition is invalid.";
+					break;
+				case plc0::ErrNeedMainFunction:
+					name = "The program need a main.";
+					break;
+				case plc0::ErrIncompleteExpression:
+					name = "The expression is incomplete.";
+					break;
                 case plc0::ErrIncompleteStatement:
                     name = "The statement is incomplete.";
                     break;
                 case plc0::ErrIncompleteCondition:
                     name = "The condition is incomplete.";
-                    break;
-                case plc0::ErrInvalidFunctionDefinition:
-                    name = "The function definition is invalid.";
-                    break;
-                case plc0::ErrNeedMainFunction:
-                    name = "The program needs main function.";
                     break;
 			    case plc0::ErrIncompleteFunctionCall:
                     name = "The function call is incomplete.";
@@ -425,12 +458,10 @@ namespace fmt {
 			case plc0::RET:
 			case plc0::IRET:
 			case plc0::IPRINT:
-			case plc0::CPRINT:
 			case plc0::PRINTL:
 			case plc0::ISCAN:
 				return format_to(ctx.out(), "{}", p.GetOperation());
 			case plc0::IPUSH:
-			case plc0::BIPUSH:
 			case plc0::POPN:
 			case plc0::LOADC:
 			case plc0::SNEW:
