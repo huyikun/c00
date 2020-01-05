@@ -37,6 +37,7 @@ namespace plc0 {
 		ErrNoLeftBrace,
 		ErrNoRightBrace,
 		ErrInvalidVariableDeclaration,
+		ErrInvalidExpression,
 		ErrInvalidStatement,
 		ErrInvalidScan,
 		ErrInvalidDecInteger,
