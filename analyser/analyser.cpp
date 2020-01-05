@@ -979,6 +979,7 @@ namespace plc0 {
 		_funcInstructions[_instructionIndex]._funins.emplace_back(LOADA, _level_diff, _offset);
 		_funcInstructions[_instructionIndex]._funins.emplace_back(ISCAN, 0, 0);
 		_funcInstructions[_instructionIndex]._funins.emplace_back(ISTORE, 0, 0);
+		_var[index]._type = 2;
 
 		next = nextToken();
 		if (!next.has_value() || next.value().GetType() != TokenType::RIGHT_BRACKET) {
